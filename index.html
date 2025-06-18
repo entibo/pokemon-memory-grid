@@ -523,7 +523,7 @@
   //
 
   passwordButton.addEventListener('click', async () => {
-    if(!hexInput.value) return
+    if (!hexInput.value) return
     passwordElement.textContent = 'Computing...'
     const password = await derivePassword(getCurrentSeed(), hexInput.value)
     const totp = await deriveTOTP(hexInput.value)
@@ -599,7 +599,15 @@
   ]) {
     hexInput.addEventListener(event, () => {
       // at this point in time, selectionStart hasn't been updated
-      setTimeout(() => updateOverlayCursor(hexInput.selectionStart), 20)
+
+      setTimeout(() => {
+        console.log(event, 'hexInput event -> updateCursor')
+        if (document.activeElement === hexInput) {
+          updateOverlayCursor(hexInput.selectionStart)
+        } else {
+          updateOverlayCursor()
+        }
+      }, 30)
     })
   }
 
@@ -637,6 +645,11 @@
   }
 
   function updateOverlayCursor(position = hexInput.value.length) {
+    console.log(
+      overlayCursor.dataset.position,
+      position,
+      Math.max(0, Math.min(position, hexInput.value.length)),
+    )
     position = Math.max(0, Math.min(position, hexInput.value.length))
     overlayCursor.dataset.position = position
 
@@ -667,4 +680,6 @@
     passwordElement.textContent = ''
     totpElement.textContent = ''
   }
+
+  updateOverlayCursor(0)
 </script>
