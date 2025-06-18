@@ -645,11 +645,6 @@
   }
 
   function updateOverlayCursor(position = hexInput.value.length) {
-    console.log(
-      overlayCursor.dataset.position,
-      position,
-      Math.max(0, Math.min(position, hexInput.value.length)),
-    )
     position = Math.max(0, Math.min(position, hexInput.value.length))
     overlayCursor.dataset.position = position
 
